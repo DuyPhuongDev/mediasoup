@@ -17,18 +17,18 @@ services:
     networks:
       - mediasoup-network
 
-    nginx:
-      image: nginx:latest
-      container_name: nginx-proxy
-      volumes:
-        - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-        - ./nginx/ssl:/etc/nginx/ssl
-      ports:
-        - "443:443"
-      depends_on:
-        - mediasoup
-      networks:
-        - lms-network
+  nginx:
+    image: nginx:latest
+    container_name: nginx-proxy
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/ssl:/etc/nginx/ssl
+    ports:
+      - "443:443"
+    depends_on:
+      - mediasoup
+    networks:
+      - lms-network
 
 networks:
   lms-network:
