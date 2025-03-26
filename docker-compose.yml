@@ -1,0 +1,35 @@
+version: "3.8"
+services:
+  mediasoup:
+    container_name: media-soup-server
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3030:3030"
+      - "40000-41000:40000-41000/udp"
+    environment:
+      - BACKEND_PORT=3030
+      - FRONTEND_PORT=9090
+      - ANNOUNCED_IP=23.102.238.76
+      - FE_URL=https://lms-dev.fsa.io.vn
+    restart: always
+    networks:
+      - mediasoup-network
+
+    nginx:
+      image: nginx:latest
+      container_name: nginx-proxy
+      volumes:
+        - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+        - ./nginx/ssl:/etc/nginx/ssl
+      ports:
+        - "443:443"
+      depends_on:
+        - mediasoup
+      networks:
+        - lms-network
+
+networks:
+  lms-network:
+    driver: bridge
